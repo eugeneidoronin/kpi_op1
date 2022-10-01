@@ -15,12 +15,11 @@ i:2   2 0 1
 <- 0 1 2 1 2 0 2 0 1
 */
 int flag(); // asks to continue
-int check(double len[N_SIDES], int index); //is used to stop or continue the code
+int check(double side1, double side2, double side3);//is used to stop or continue the code
 double area(double len[N_SIDES], int p); // finds the area of tg
 double height(double len[N_SIDES], int index, double root); //finds height
-double medians(double len[N_SIDES], int index); // finds median
-double bisector(double len[N_SIDES], int index, double p);//finds bisector
-double bisector2(double , double , double, double p);//finds bisector
+double medians(double side1, double side2, double side3);// finds median
+double bisector(double , double , double, double p);//finds bisector
 
 int main() {
     do //cycle to loop the whole program
@@ -40,7 +39,8 @@ int main() {
                 test++;
                 break;
             }
-            if (!check(lengths, num)) { //checks the main equality of triangle
+            if (!check(lengths[indecies[N_SIDES*num]],lengths[indecies[N_SIDES*num+1]], \
+            lengths[indecies[N_SIDES*num+2]])) { //checks the main equality of triangle
                 printf("[ERROR] sorry this triangle does not exist :c");
                 test++;
                 break;
@@ -53,11 +53,12 @@ int main() {
             printf("area equals %.2f cm\n", sqrt(root));
             printf("perimeter = %.2f cm\n", p);
             for (int i = 0; i < N_SIDES; i++) {
-                printf("to %c: height = %.2f cm; bisector = %.2f / %.2f cm; median = %.2f cm\n", sides[i],
+                printf("to %c: height = %.2f cm; bisector = %.2f cm; median = %.2f cm\n", sides[i],
                        height(lengths, i, root), \
-                       bisector(lengths, i, p / 2),
-                       bisector2(lengths[indecies[N_SIDES*i]],lengths[indecies[N_SIDES*i+1]], lengths[indecies[N_SIDES*i+2]],p / 2),
-                       medians(lengths, i));
+                       bisector(lengths[indecies[N_SIDES*i]],lengths[indecies[N_SIDES*i+1]],\
+                       lengths[indecies[N_SIDES*i+2]],p / 2),//e.g. i=0: indecies[3*0+1]
+                       medians(lengths[indecies[N_SIDES*i]],lengths[indecies[N_SIDES*i+1]], \
+                       lengths[indecies[N_SIDES*i+2]]));
             }
         }
     } while (flag()); //returns 1 if 'no' - I do not want to quit the program
@@ -72,29 +73,12 @@ int flag() {//analyzes the input yes or no
     else return 1;
 }
 
-int check(double len[N_SIDES], int index) {
+int check(double side1, double side2, double side3){
     int ret = 0;
-    switch (index) {//different cases depending on which side are we examining now
-        case 0:
-            if (len[1] + len[2] > len[0]) {
-                ret += 1;
-                break;
-            }
-            else break; //main equation:one side is smaller than the sum of other two
-        case 1:
-            if (len[0] + len[2] > len[1]) {
-                ret += 1;
-                break;
-            }
-            else break;
-        case 2:
-            if (len[0] + len[1] > len[2]) {
-                ret += 1;
-                break;
-            }
-            else break;
+    if (side2 + side3 > side1) {
+        return ret + 1;
     }
-    return ret;
+    else return ret;
 }
 
 double area(double len[N_SIDES], int p) {
@@ -109,29 +93,11 @@ double height(double len[N_SIDES], int index, double root) {
     return (2 * sqrt(root)) / len[index]; //the formula: (2*sqrt(p(p-a)(p-b)(p-c))/side which is being examined
 }
 
-double medians(double len[N_SIDES], int index) {
-    switch (index) {//depending on wat side is being examined
-        case 0:
-            return 0.5 * sqrt(2 * pow(len[1], 2) + 2 * pow(len[2], 2) -
-                              pow(len[0], 2));//the formula: 0.5*sqrt(2b^2+2c^2-a^2) (median to a)
-        case 1:
-            return 0.5 * sqrt(2 * pow(len[0], 2) + 2 * pow(len[2], 2) - pow(len[1], 2));
-        case 2:
-            return 0.5 * sqrt(2 * pow(len[0], 2) + 2 * pow(len[1], 2) - pow(len[2], 2));
-    }
+double medians(double side1, double side2, double side3){
+    return 0.5 * sqrt(2 * pow(side2, 2) + 2 * pow(side3, 2) -
+                      pow(side1, 2));
 }
 
-double bisector(double len[N_SIDES], int index, double p) {
-    switch (index) {//depending on wat side is being examined
-        case 0:
-            return (2 / (len[1] + len[2])) * sqrt(len[1] * len[2] * p * (p -
-                                                                         len[0]));//the formula: (2/b+c)*sqrt(bcp(p-a)) where p is half perimeter
-        case 1:
-            return (2 / (len[0] + len[2])) * sqrt(len[0] * len[2] * p * (p - len[1]));
-        case 2:
-            return (2 / (len[1] + len[0])) * sqrt(len[1] * len[0] * p * (p - len[2]));
-    }
-}
-double bisector2(double side1, double side2, double side3, double p) {
+double bisector(double side1, double side2, double side3, double p) {
     return (2 / (side2 + side3)) * sqrt(side2 * side3 * p * (p - side1));
 }
