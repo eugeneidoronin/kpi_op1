@@ -27,12 +27,10 @@ int main() {
         int test = 0; //flag value
         double p = 0; //perimeter
         double lengths[N_SIDES]; //arr with all the lengths of the sides
-        printf("print the length of the side A of the triangle in cm:");
-        scanf("%lf", &lengths[0]);//%lf- specificator for double &-adrres of the object
-        printf("print the length of the side B of the triangle in cm:");
-        scanf("%lf", &lengths[1]);
-        printf("print the length of the side C of the triangle in cm:");
-        scanf("%lf", &lengths[2]);
+        for (int i=0; i<N_SIDES; i++){
+            printf("print the length of the side %c of the triangle in cm:", sides[i]);
+            scanf("%lf", &lengths[i]);//%lf- specificator for double &-adrres of the object
+        }
         for (int num = 0; num < N_SIDES; num++) {
             if (lengths[num] < 0) { //checks the side not to be negative
                 printf("[ERROR] the length cant be negative :c");
