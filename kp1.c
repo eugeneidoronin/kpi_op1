@@ -51,12 +51,6 @@ int main() {
             printf("area equals %.2f cm\n", sqrt(root));
             printf("perimeter = %.2f cm\n", p);
             for (int i = 0; i < N_SIDES; i++) {
-                /*printf("to %c: height = %.2f cm; bisector = %.2f cm; median = %.2f cm\n", sides[i],
-                       height(lengths, i, root), \
-                       bisector(lengths[indices[N_SIDES*i]],lengths[indices[N_SIDES*i+1]],\
-                       lengths[indices[N_SIDES*i+2]],p / 2),//e.g. i=0: indecies[3*0+1]
-                       medians(lengths[indices[N_SIDES*i]],lengths[indices[N_SIDES*i+1]], \
-                       lengths[indices[N_SIDES*i+2]]));*/
                 double side1 = lengths[indices[N_SIDES*i]];
                 double side2 = lengths[indices[N_SIDES*i+1]];
                 double side3 = lengths[indices[N_SIDES*i+2]];
